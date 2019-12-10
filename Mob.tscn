@@ -1,12 +1,15 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Mob.gd" type="Script" id=1]
 [ext_resource path="res://art/enemyWalking_1.png" type="Texture" id=2]
 [ext_resource path="res://art/enemyWalking_2.png" type="Texture" id=3]
-[ext_resource path="res://art/enemySwimming_1.png" type="Texture" id=4]
-[ext_resource path="res://art/enemySwimming_2.png" type="Texture" id=5]
-[ext_resource path="res://art/enemyFlyingAlt_1.png" type="Texture" id=6]
-[ext_resource path="res://art/enemyFlyingAlt_2.png" type="Texture" id=7]
+[ext_resource path="res://art/enemyFlyingAlt_1.png" type="Texture" id=4]
+[ext_resource path="res://art/enemyFlyingAlt_2.png" type="Texture" id=5]
+[ext_resource path="res://art/enemySwimming_1.png" type="Texture" id=6]
+[ext_resource path="res://art/enemySwimming_2.png" type="Texture" id=7]
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( -3.47466, 25.2791, -22.373, 18.1645, -23.7069, -16.2971, 0.0826721, -23.4118, 26.0956, -13.4068, 24.0946, 13.9401 )
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -17,13 +20,13 @@ animations = [ {
 }, {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
-"name": "swim",
-"speed": 5.0
+"name": "fly",
+"speed": 4.98
 }, {
 "frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
-"name": "fly",
-"speed": 4.98
+"name": "swim",
+"speed": 5.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=2]
@@ -31,6 +34,7 @@ radius = 25.8826
 height = 14.1799
 
 [node name="Mob" type="RigidBody2D"]
+position = Vector2( 0, -2.22333 )
 collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource( 1 )
@@ -38,10 +42,16 @@ __meta__ = {
 "_edit_group_": true
 }
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 4.22433, -1.77866 )
+occluder = SubResource( 3 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+light_mask = 0
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 animation = "walk"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

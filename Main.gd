@@ -13,6 +13,7 @@ func game_over():
 
 func new_game():
     score = 0
+    $MobTimer.wait_time = 2
     $Player.start($StartPosition.position)
     $StartTimer.start()
     $HUD.update_score(score)
