@@ -22,7 +22,7 @@ color = Color( 0.211765, 0.545098, 0.411765, 1 )
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 2.0
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -38,7 +38,7 @@ curve = SubResource( 1 )
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 position = Vector2( 32.896, 35.0107 )
-rotation = 0.00999911
+rotation = 0.010001
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
 [connection signal="hit" from="Player" to="." method="game_over"]

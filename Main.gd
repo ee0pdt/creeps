@@ -43,3 +43,4 @@ func _on_MobTimer_timeout():
     mob.linear_velocity = Vector2(rand_range(mob.min_speed, mob.max_speed), 0)
     mob.linear_velocity = mob.linear_velocity.rotated(direction)
     $HUD.connect("start_game", mob, "_on_start_game")
+    $MobTimer.wait_time = $MobTimer.wait_time * 0.9
