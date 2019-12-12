@@ -27,9 +27,9 @@ func _on_StartTimer_timeout():
     $MobTimer.start()
     $ScoreTimer.start()
 
-func _on_ScoreTimer_timeout():
-    score += 1
-    $HUD.update_score(score)
+#func _on_ScoreTimer_timeout():
+    #score += 1
+    #$HUD.update_score(score)
 
 func _on_MobTimer_timeout():
     var mobs = get_tree().get_nodes_in_group("mobs")
@@ -53,10 +53,10 @@ func _on_MobTimer_timeout():
         $MobTimer.wait_time = $MobTimer.wait_time * 0.95
 
 func _on_Player_collectedCoin():
-    score = score + 10
-
+    score = score + 1
+    $HUD.update_score(score)
 
 func _on_CoinTimer_timeout():
     var coin = Coin.instance()
     add_child(coin)
-    coin.position = Vector2(rand_range(10, 400), rand_range(10, 400))
+    coin.position = Vector2(rand_range(10, 400), 0)

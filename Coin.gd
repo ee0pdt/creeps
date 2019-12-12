@@ -10,3 +10,5 @@ func _on_VisibilityNotifier2D_screen_exited():
 func _on_start_game():
     queue_free()
 
+func _process(delta):
+    $Light2D.rotation_degrees = randi()

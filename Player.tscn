@@ -40,7 +40,6 @@ animation = "up"
 shape = SubResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 6.54593, 3.66072 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 6 )
 color = Color( 0.215686, 0.635294, 0.886275, 1 )

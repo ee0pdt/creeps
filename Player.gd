@@ -28,6 +28,14 @@ func _process(delta):
     position += velocity * delta
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
+    
+    var lightFactor = abs(sin(deg2rad(OS.get_ticks_msec()/10)))
+    
+    $Light2D.energy = lightFactor / 2 + 0.4
+    $Light2D.scale.x = (lightFactor / 10) + 0.2
+    $Light2D.scale.y = (lightFactor / 10) + 0.2
+    $Light2D.rotation_degrees += 1
+    
     if velocity.x != 0:
         $AnimatedSprite.animation = "right"
         $AnimatedSprite.flip_v = false
