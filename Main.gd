@@ -1,6 +1,8 @@
 extends Node
 
 export (PackedScene) var Mob
+export (PackedScene) var Coin
+
 var score
 
 func _ready():
@@ -13,9 +15,10 @@ func game_over():
 
 func new_game():
     score = 0
-    $MobTimer.wait_time = 2
+    $MobTimer.wait_time = 3
     $Player.start($StartPosition.position)
     $StartTimer.start()
+    $CoinTimer.start()
     $HUD.update_score(score)
     $HUD.show_message("Get Ready")
 
@@ -44,4 +47,14 @@ func _on_MobTimer_timeout():
     mob.linear_velocity = Vector2(rand_range(mob.min_speed, mob.max_speed), 0)
     mob.linear_velocity = mob.linear_velocity.rotated(direction)
     $HUD.connect("start_game", mob, "_on_start_game")
-    $MobTimer.wait_time = $MobTimer.wait_time * 0.9
+    $MobTimer.wait_time = $MobTimer.wait_time * 0.95
+
+
+func _on_Player_collectedCoin():
+    score = score + 10
+
+
+func _on_CoinTimer_timeout():
+    var coin = Coin.instance()
+    add_child(coin)
+    coin.position = Vector2(rand_range(10, 400), rand_range(10, 400))

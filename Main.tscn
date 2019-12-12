@@ -1,43 +1,40 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
-[ext_resource path="res://art/bubble_low_res.png" type="Texture" id=3]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=5]
-[ext_resource path="res://art/light.png" type="Texture" id=6]
+[ext_resource path="res://Coin.tscn" type="PackedScene" id=3]
+[ext_resource path="res://art/bubble_low_res.png" type="Texture" id=4]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://art/light.png" type="Texture" id=7]
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=1]
 max_value = 200.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 2
-emission_box_extents = Vector3( 1000, 20, 2 )
+emission_box_extents = Vector3( 400, 2, 2 )
 flag_disable_z = true
-spread = 22.06
+spread = 0.0
 gravity = Vector3( 0, -98, 0 )
-initial_velocity = 17.4
-initial_velocity_random = 0.26
-angular_velocity = 3.0
-angular_velocity_random = 0.5
+initial_velocity = 1.0
+initial_velocity_random = 0.1
 orbit_velocity = 0.02
 orbit_velocity_random = 0.36
-linear_accel = 7.83
-damping = 6.52
-damping_random = 0.13
-scale = 2.0
+linear_accel = 0.01
+scale = 1.5
 scale_random = 1.0
 hue_variation = -0.03
 hue_variation_random = 0.17
 anim_speed = 15.58
 anim_speed_random = 0.33
-anim_speed_curve = SubResource( 4 )
+anim_speed_curve = SubResource( 2 )
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id=4]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 32.896, 35.0107, 0, 0, 0, 0, 446.044, 39.1421, 0, 0, 0, 0, 449.349, 676.216, 0, 0, 0, 0, 33.7223, 674.564, 0, 0, 0, 0, 32.896, 35.0107 )
 }
@@ -45,25 +42,29 @@ _data = {
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 Mob = ExtResource( 2 )
+Coin = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
+editor/display_folded = true
 margin_right = 473.0
 margin_bottom = 707.0
 color = Color( 0.211765, 0.545098, 0.411765, 1 )
 
-[node name="Particles2D" type="Particles2D" parent="ColorRect"]
+[node name="Bubbles" type="Particles2D" parent="ColorRect"]
 light_mask = 0
-position = Vector2( 238.734, 692.836 )
+position = Vector2( 232.959, 703.148 )
 scale = Vector2( 0.2, 0.2 )
-amount = 60
+amount = 30
 lifetime = 53.07
+preprocess = 2.0
+speed_scale = 2.0
 explosiveness = 0.3
 randomness = 0.2
 visibility_rect = Rect2( 0, 0, 400, 720 )
-process_material = SubResource( 2 )
-texture = ExtResource( 3 )
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
+[node name="Player" parent="." instance=ExtResource( 5 )]
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -78,18 +79,19 @@ one_shot = true
 position = Vector2( 240, 450 )
 
 [node name="MobPath" type="Path2D" parent="."]
-curve = SubResource( 1 )
+editor/display_folded = true
+curve = SubResource( 4 )
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 position = Vector2( 32.896, 35.0107 )
 rotation = 0.010001
 
-[node name="HUD" parent="." instance=ExtResource( 5 )]
+[node name="HUD" parent="." instance=ExtResource( 6 )]
 
 [node name="Light2D" type="Light2D" parent="."]
 position = Vector2( 234.215, -19.4619 )
 scale = Vector2( 1.48104, 1.48104 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 energy = 0.7
 shadow_enabled = true
 shadow_color = Color( 0.286275, 0.901961, 0.831373, 0 )
@@ -100,8 +102,13 @@ shadow_filter_smooth = 11.1
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 position = Vector2( 245.623, 332.867 )
 color = Color( 0.470588, 0.470588, 0.470588, 1 )
+
+[node name="CoinTimer" type="Timer" parent="."]
+wait_time = 5.0
+[connection signal="collectedCoin" from="Player" to="." method="_on_Player_collectedCoin"]
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="CoinTimer" to="." method="_on_CoinTimer_timeout"]

@@ -1,6 +1,7 @@
 extends Area2D
 
 signal hit
+signal collectedCoin
 
 export var speed = 400  # How fast the player will move (pixels/sec).
 var screen_size  # Size of the game window.
@@ -8,7 +9,7 @@ var screen_size  # Size of the game window.
 func _ready():
     screen_size = get_viewport_rect().size
     hide()
-	
+  
 func _process(delta):
     var velocity = Vector2()  # The player's movement vector.
     if Input.is_action_pressed("ui_right"):
@@ -38,9 +39,15 @@ func _process(delta):
 
 
 func _on_Player_body_entered(body):
-    hide()  # Player disappears after being hit.
-    emit_signal("hit")
-    $CollisionShape2D.set_deferred("disabled", true)
+    print(body.get_groups())
+    if body.get_groups().has("mobs"):
+        hide()  # Player disappears after being hit.
+        emit_signal("hit")
+        # Stop looking for collisions, we dead
+        $CollisionShape2D.set_deferred("disabled", true)
+    elif body.get_groups().has("coins"):
+        body.queue_free()
+        emit_signal("collectedCoin")
 
 func start(pos):
     position = pos
