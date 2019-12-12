@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-export var min_speed = 50  # Minimum speed range.
+export var min_speed = 100  # Minimum speed range.
 export var max_speed = 200  # Maximum speed range.
 var mob_types = ["walk", "swim", "fly"]
 
