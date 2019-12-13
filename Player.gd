@@ -5,6 +5,7 @@ signal collectedCoin
 
 export var speed = 400  # How fast the player will move (pixels/sec).
 var screen_size  # Size of the game window.
+var flashing = false
 
 func _ready():
     screen_size = get_viewport_rect().size
@@ -29,12 +30,22 @@ func _process(delta):
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
     
-    var lightFactor = abs(sin(deg2rad(OS.get_ticks_msec()/10)))
+    var pulseGap = 10
+    var lightColor = '#eeeeff'
+    var lightEnergyOffset = 0.4
     
-    $Light2D.energy = lightFactor / 2 + 0.4
+    if flashing:
+        pulseGap = 1
+        lightColor = '#ff0000'
+        lightEnergyOffset = 0.6
+        
+    var lightFactor = abs(sin(deg2rad(OS.get_ticks_msec()/pulseGap)))
+    
+    $Light2D.energy = lightFactor / 2 + lightEnergyOffset
     $Light2D.scale.x = (lightFactor / 10) + 0.2
     $Light2D.scale.y = (lightFactor / 10) + 0.2
     $Light2D.rotation_degrees += 1
+    #$Light2D.color = lightColor
     
     if velocity.x != 0:
         $AnimatedSprite.animation = "right"
@@ -47,17 +58,27 @@ func _process(delta):
 
 
 func _on_Player_body_entered(body):
-    print(body.get_groups())
+    var parent = get_parent()
     if body.get_groups().has("mobs"):
-        hide()  # Player disappears after being hit.
+        $PlayerHitTimer.start()
+        flashing = true
         emit_signal("hit")
         # Stop looking for collisions, we dead
         $CollisionShape2D.set_deferred("disabled", true)
     elif body.get_groups().has("coins"):
         body.queue_free()
+        $CoinCollectTimer.start()
+        flashing = true
         emit_signal("collectedCoin")
 
 func start(pos):
     position = pos
     show()
     $CollisionShape2D.disabled = false
+
+func _on_PlayerHitTimer_timeout():
+    flashing = false
+    $CollisionShape2D.disabled = false
+
+func _on_CoinCollectTimer_timeout():
+    flashing = false

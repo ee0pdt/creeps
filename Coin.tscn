@@ -51,7 +51,6 @@ scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 3 )
 vframes = 2
 hframes = 3
-frame = 2
 region_enabled = true
 region_rect = Rect2( 0, 0, 390, 260 )
 region_filter_clip = true

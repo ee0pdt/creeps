@@ -3,33 +3,41 @@ extends Node
 export (PackedScene) var Mob
 export (PackedScene) var Coin
 
-var score
+const INITIAL_LIVES = 3
+
+export var score = 0
+export var lives = INITIAL_LIVES
 const MAX_MOBS = 5;
 
 func _ready():
     randomize()
 
+func player_hit():
+    lives = lives - 1
+    $HUD.update_lives(lives)
+    if lives < 1:
+        game_over()
+
 func game_over():
-    $ScoreTimer.stop()
+    $Player.hide()
     $MobTimer.stop()
     $HUD.show_game_over()
 
 func new_game():
+    lives = INITIAL_LIVES
+    print(lives)
     score = 0
     $MobTimer.wait_time = 3
     $Player.start($StartPosition.position)
+    $Player.flashing = false
     $StartTimer.start()
-    $CoinTimer.start()
     $HUD.update_score(score)
+    $HUD.update_lives(lives)
     $HUD.show_message("Get Ready")
 
 func _on_StartTimer_timeout():
     $MobTimer.start()
-    $ScoreTimer.start()
-
-#func _on_ScoreTimer_timeout():
-    #score += 1
-    #$HUD.update_score(score)
+    $CoinTimer.start()
 
 func _on_MobTimer_timeout():
     var mobs = get_tree().get_nodes_in_group("mobs")
@@ -55,8 +63,15 @@ func _on_MobTimer_timeout():
 func _on_Player_collectedCoin():
     score = score + 1
     $HUD.update_score(score)
+    if score >= 10:
+        win()
 
 func _on_CoinTimer_timeout():
     var coin = Coin.instance()
     add_child(coin)
     coin.position = Vector2(rand_range(10, 400), 0)
+
+func win():
+    $Player.hide()
+    $MobTimer.stop()
+    $HUD.show_win()

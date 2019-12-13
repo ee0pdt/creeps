@@ -120,7 +120,7 @@ script = SubResource( 5 )
 [node name="CoinTimer" type="Timer" parent="."]
 wait_time = 5.0
 [connection signal="collectedCoin" from="Player" to="." method="_on_Player_collectedCoin"]
-[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="hit" from="Player" to="." method="player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://CoinSheet.png" type="Texture" id=3]
+[ext_resource path="res://Heart.tscn" type="PackedScene" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 46
@@ -80,6 +81,7 @@ one_shot = true
 [node name="Sprite" type="Sprite" parent="." groups=[
 "coins",
 ]]
+editor/display_folded = true
 position = Vector2( 341.67, 63.1395 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 3 )
@@ -92,5 +94,14 @@ region_filter_clip = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 anims/Spin = SubResource( 3 )
+
+[node name="Heart1" parent="." instance=ExtResource( 4 )]
+position = Vector2( 69.1042, 64.1237 )
+
+[node name="Heart2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 126.38, 64.1237 )
+
+[node name="Heart3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 182.41, 64.1237 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
