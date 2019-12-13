@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -7,6 +7,13 @@
 [ext_resource path="res://Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://art/light.png" type="Texture" id=7]
+[ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=8]
+[ext_resource path="res://art/gameover.wav" type="AudioStream" id=9]
+[ext_resource path="res://art/Picked Coin Echo 2.wav" type="AudioStream" id=10]
+[ext_resource path="res://art/warning.wav" type="AudioStream" id=11]
+[ext_resource path="res://art/cave themeb4.ogg" type="AudioStream" id=12]
+[ext_resource path="res://art/splash.wav" type="AudioStream" id=13]
+[ext_resource path="res://art/win.wav" type="AudioStream" id=14]
 
 [sub_resource type="Curve" id=1]
 max_value = 200.0
@@ -118,7 +125,30 @@ shadow_filter_smooth = 11.1
 script = SubResource( 5 )
 
 [node name="CoinTimer" type="Timer" parent="."]
-wait_time = 5.0
+one_shot = true
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="CoinSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 10 )
+
+[node name="AlertSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="CoinAppearSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -11.702
+
+[node name="WinSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
 [connection signal="collectedCoin" from="Player" to="." method="_on_Player_collectedCoin"]
 [connection signal="hit" from="Player" to="." method="player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]

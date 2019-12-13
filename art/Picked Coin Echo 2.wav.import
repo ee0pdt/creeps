@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Picked Coin Echo 2.wav-fe31735f9767a731b7a0f9095cdbf61d.sample"
+
+[deps]
+
+source_file="res://art/Picked Coin Echo 2.wav"
+dest_files=[ "res://.import/Picked Coin Echo 2.wav-fe31735f9767a731b7a0f9095cdbf61d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

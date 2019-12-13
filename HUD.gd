@@ -8,9 +8,10 @@ func show_message(text):
     $MessageTimer.start()
 
 func show_game_over():
+    var coin_target = get_parent().WIN_TARGET;
     show_message("Game Over")
     yield($MessageTimer, "timeout")
-    $MessageLabel.text = "Collect 10 Coins"
+    $MessageLabel.text = "Collect %s Coins" % coin_target
     $MessageLabel.show()
     yield(get_tree().create_timer(1), 'timeout')
     $StartButton.show()
@@ -38,9 +39,10 @@ func _on_MessageTimer_timeout():
     $MessageLabel.hide()
 
 func show_win():
+    var coin_target = get_parent().WIN_TARGET;
     show_message("You won!")
     yield($MessageTimer, "timeout")
-    $MessageLabel.text = "Collect 10 Coins"
+    $MessageLabel.text = "Collect %s Coins" % coin_target
     $MessageLabel.show()
     yield(get_tree().create_timer(1), 'timeout')
     $StartButton.show()

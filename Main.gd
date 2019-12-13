@@ -8,8 +8,10 @@ const INITIAL_LIVES = 3
 export var score = 0
 export var lives = INITIAL_LIVES
 const MAX_MOBS = 5;
+const WIN_TARGET = 3
 
 func _ready():
+    $MenuMusic.play()
     randomize()
 
 func player_hit():
@@ -17,13 +19,19 @@ func player_hit():
     $HUD.update_lives(lives)
     if lives < 1:
         game_over()
+    else:
+        $AlertSound.play()
 
 func game_over():
+    $Music.stop()
+    $DeathSound.play()
     $Player.hide()
     $MobTimer.stop()
     $HUD.show_game_over()
 
 func new_game():
+    $MenuMusic.stop()
+    $Music.play()
     lives = INITIAL_LIVES
     print(lives)
     score = 0
@@ -61,17 +69,30 @@ func _on_MobTimer_timeout():
         $MobTimer.wait_time = $MobTimer.wait_time * 0.95
 
 func _on_Player_collectedCoin():
+    $CoinSound.play()
     score = score + 1
     $HUD.update_score(score)
-    if score >= 10:
+    if score >= WIN_TARGET:
+        $Player/CollisionShape2D.set_deferred("disabled", true)
+        $CoinTimer.stop()
         win()
 
 func _on_CoinTimer_timeout():
     var coin = Coin.instance()
+    $CoinAppearSound.play()
     add_child(coin)
     coin.position = Vector2(rand_range(10, 400), 0)
+    $CoinTimer.wait_time = rand_range(3,6)
+    $CoinTimer.start()
 
 func win():
+    for mobs in get_tree().get_nodes_in_group("mobs"):
+        mobs.queue_free()
+    
+    $CoinAppearSound.stop()
+    $WinSound.play()
+    $Music.stop()
     $Player.hide()
     $MobTimer.stop()
     $HUD.show_win()
+    
