@@ -103,5 +103,11 @@ position = Vector2( 126.38, 64.1237 )
 
 [node name="Heart3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 182.41, 64.1237 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 216.028
+margin_top = 175.562
+margin_right = 256.028
+margin_bottom = 189.562
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]

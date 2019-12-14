@@ -2,6 +2,10 @@ extends CanvasLayer
 
 signal start_game
 
+func _ready():
+    var parent = get_parent()
+    $HighScoreLabel.text = text
+
 func show_message(text):
     $MessageLabel.text = text
     $MessageLabel.show()

@@ -5,12 +5,25 @@ export (PackedScene) var Coin
 
 const INITIAL_LIVES = 3
 
+var highscore
 export var score = 0
 export var lives = INITIAL_LIVES
 const MAX_MOBS = 5;
 const WIN_TARGET = 10
 
+var savegame = File.new() #file
+var save_path = "user://savegame.save" #place of the file
+var save_data = {"highscore": 0} #variable to store data
+
+func create_save():
+   savegame.open(save_path, File.WRITE)
+   savegame.store_var(save_data)
+   savegame.close()
+
 func _ready():
+    if not savegame.file_exists(save_path):
+        create_save()
+    highscore = get_highscore()
     $MenuMusic.play()
     randomize()
 
@@ -28,6 +41,19 @@ func game_over():
     $Player.hide()
     $MobTimer.stop()
     $HUD.show_game_over()
+    save_high_score(score)
+    
+func get_highscore():
+   savegame.open(save_path, File.READ) #open the file
+   save_data = savegame.get_var() #get the value
+   savegame.close() #close the file
+   return save_data["highscore"] #return the value
+
+func save_high_score(high_score):    
+   save_data["highscore"] = high_score #data to save
+   savegame.open(save_path, File.WRITE) #open file to write
+   savegame.store_var(save_data) #store the data
+   savegame.close() # close the file
 
 func new_game():
     $MenuMusic.stop()
