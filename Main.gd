@@ -8,7 +8,7 @@ const INITIAL_LIVES = 3
 export var score = 0
 export var lives = INITIAL_LIVES
 const MAX_MOBS = 5;
-const WIN_TARGET = 3
+const WIN_TARGET = 10
 
 func _ready():
     $MenuMusic.play()
